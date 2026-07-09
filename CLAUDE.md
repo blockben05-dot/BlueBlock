@@ -13,6 +13,44 @@ reporting.
 This repo (`BlueBlock`) is the practice/build repo — currently a single
 demo site, not yet the multi-tenant production system.
 
+## Progress log (what's actually been done, in order)
+
+1. Set up local dev environment: configured git identity (name/email),
+   generated an SSH key, added it to GitHub (`blockben05-dot`), verified
+   `ssh -T git@github.com` auth works.
+2. Created the empty `BlueBlock` GitHub repo, scaffolded the project
+   locally with `create-next-app` (Next.js 16, TypeScript, Tailwind,
+   App Router, ESLint), connected the remote, pushed the initial commit.
+3. Built the full demo landing page for a fictional business — originally
+   "Diamond State Landscaping," then renamed to **Diamond State Block
+   Landscaping** after a web search turned up a real "Diamond State
+   Landscaping, LLC" operating in DE/AR (avoiding client-facing name
+   collision). Sections: header/mobile nav, hero, services, portfolio
+   (gradient placeholders, no scraped photos), about, reviews (clearly
+   labeled as sample), contact + quote form, footer. Verified visually at
+   desktop + mobile widths and tested real interactions (mobile menu,
+   form submit) in a live preview browser, not just type-checked.
+4. Created a Vercel account (Hobby tier — fine for a non-commercial demo,
+   must upgrade to Pro before any real paying client goes live per
+   Vercel's ToS), installed the GitHub App, imported `BlueBlock`, and
+   deployed it. Live at `blue-block-lovat.vercel.app`, auto-deploys on
+   every push to `main`.
+5. Wired the quote form to send a real email instead of a fake client-only
+   "thanks" message: added the `resend` npm package, built
+   `src/app/api/quote/route.ts` (a Next.js Route Handler that calls
+   Resend's API), updated `QuoteForm.tsx` to actually `fetch()` that route
+   and show real success/error states. Fixed `.gitignore` so `.env.example`
+   (documents the required vars) is tracked while `.env.local` (the real
+   secret key) stays untracked.
+6. Created a Resend account, generated an API key, added
+   `RESEND_API_KEY` + `LEAD_NOTIFICATION_EMAIL` to local `.env.local` and
+   to the Vercel project's Environment Variables, redeployed production,
+   and confirmed the live API endpoint actually sends email
+   (`curl -X POST https://blue-block-lovat.vercel.app/api/quote` →
+   `{"ok":true}`, 200).
+7. Confirmed Vercel Web Analytics is free on Hobby up to 50,000
+   events/month — safe to enable without cost risk.
+
 ## Current state
 
 - Stack: Next.js 16 (App Router, Turbopack, React 19.2) + TypeScript +
@@ -59,14 +97,40 @@ demo site, not yet the multi-tenant production system.
 - Claude Code is the primary day-to-day dev driver for this project (not
   Cursor/Codex).
 
-## Next steps (not yet done)
+## Next steps (backlog, roughly in order)
 
-- Real lead-capture pipeline: form submit → persist to a database first
+Still on this demo repo, no real client yet:
+
+- Basic local-SEO plumbing: meta/Open Graph tags, `LocalBusiness`
+  schema.org structured data — the actual mechanism behind "rank locally
+  on Google," worth baking into the template now.
+- Real lead-capture persistence: form submit → write to a database first
   (e.g. Supabase/Postgres) → then notify via SMS/email (Twilio/Resend) —
-  never notify-only, so a failed notification can't lose a lead.
-- Eventually: multi-tenant architecture (one Next.js app, per-client
-  config files, hostname-based routing) instead of one repo per client,
-  once there's more than one real client.
+  never notify-only, so a failed email send can't silently lose a lead.
+  This is the biggest remaining gap before a real client could rely on it.
+- Business-side, in parallel (not blocking code work, but don't skip):
+  draft a short client agreement — setup fee, monthly retainer terms, who
+  owns the domain, what happens on cancellation.
+
+Only once there's a real paying client:
+
+- Buy *their* domain, point DNS at a Vercel project for their site.
+- Upgrade Vercel to **Pro** before their site goes live.
+- Set that project's `LEAD_NOTIFICATION_EMAIL` to their phone/email (see
+  "Multi-client environment variables" below for the Shared Variable
+  trick for `RESEND_API_KEY`).
+- Edit `QuoteForm.tsx`'s `SERVICE_OPTIONS` and `route.ts`'s `from` name
+  to match their actual business/services — this is currently a
+  per-client manual edit, not a config file (see next bullet).
+
+Eventually, once there's more than ~2-3 real clients:
+
+- Multi-tenant architecture: one Next.js app, per-client config files
+  (business name, service list, notification email), hostname-based
+  routing — replacing one-repo/one-Vercel-project-per-client so a single
+  `git push` updates every client site at once.
+- Automate monthly traffic/lead reporting (e.g. Vercel Cron aggregating
+  analytics + lead counts) instead of building it by hand per client.
 
 ## Multi-client environment variables (for when there's more than one client project)
 
