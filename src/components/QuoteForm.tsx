@@ -12,6 +12,8 @@ const SERVICE_OPTIONS = [
   "Something else",
 ];
 
+type Status = "idle" | "submitting" | "success" | "error";
+
 function Field({
   label,
   name,
@@ -36,23 +38,36 @@ function Field({
 }
 
 export function QuoteForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
+    setStatus("submitting");
+
+    const formData = new FormData(event.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      setStatus(response.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
   }
 
-  if (submitted) {
+  if (status === "success") {
     return (
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
         <h3 className="text-xl font-semibold text-emerald-800">
-          Thanks — request received!
+          Thanks — we got it!
         </h3>
         <p className="mt-2 text-sm text-emerald-700">
-          This is a demo form, so nothing was actually sent. On the live site,
-          this routes straight to the owner&apos;s phone and email the moment
-          it&apos;s submitted.
+          Your request was sent. We&apos;ll reach out shortly.
         </p>
       </div>
     );
@@ -109,11 +124,19 @@ export function QuoteForm() {
         />
       </div>
 
+      {status === "error" && (
+        <p className="text-sm font-medium text-red-600">
+          Something went wrong sending your request. Please try again, or
+          call us directly.
+        </p>
+      )}
+
       <button
         type="submit"
-        className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+        disabled={status === "submitting"}
+        className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Get My Free Quote
+        {status === "submitting" ? "Sending..." : "Get My Free Quote"}
       </button>
     </form>
   );
