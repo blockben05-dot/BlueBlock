@@ -18,8 +18,11 @@ demo site, not yet the multi-tenant production system.
 - Stack: Next.js 16 (App Router, Turbopack, React 19.2) + TypeScript +
   Tailwind CSS v4 + lucide-react icons.
 - `src/app/page.tsx` assembles a single-page demo site for a fictional
-  business, **Diamond State Landscaping** (Newark/Hockessin, DE), used to
-  learn the stack and as a template shape for real client sites.
+  business, **Diamond State Block Landscaping** (Newark/Hockessin, DE),
+  used to learn the stack and as a template shape for real client sites.
+  Named "Diamond State Block" (not just "Diamond State Landscaping") to
+  avoid colliding with a real Diamond State Landscaping, LLC that already
+  operates in Delaware/Arkansas — verified via web search on 2026-07-09.
 - Sections/components in `src/components/`: `SiteHeader` (nav + mobile
   menu, client component), `Hero`, `Services`, `Portfolio` (gradient photo
   placeholders — no real/scraped images used), `About`, `Reviews`

@@ -15,7 +15,7 @@ export function Hero() {
             Lawns and landscapes your neighbors will ask about.
           </h1>
           <p className="mt-5 text-lg text-slate-600">
-            Diamond State Landscaping keeps New Castle County properties
+            Diamond State Block Landscaping keeps New Castle County properties
             looking sharp all year — mowing, mulching, cleanups, and full
             landscape installs from a local crew you can actually reach.
           </p>

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Diamond State Landscaping | Newark & Hockessin, DE",
+  title: "Diamond State Block Landscaping | Newark & Hockessin, DE",
   description:
     "Lawn care, landscaping, and hardscaping for Newark, Hockessin, and New Castle County, DE. Get a free quote today.",
 };

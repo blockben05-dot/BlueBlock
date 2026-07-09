@@ -13,7 +13,7 @@ export function About() {
       <div className="mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2 md:items-center">
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-slate-900">
-            About Diamond State Landscaping
+            About Diamond State Block Landscaping
           </h2>
           <p className="mt-4 text-slate-600">
             We&apos;re a local crew based in Newark, DE, serving homeowners and

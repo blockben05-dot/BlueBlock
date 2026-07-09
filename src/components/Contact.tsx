@@ -3,7 +3,7 @@ import { QuoteForm } from "./QuoteForm";
 
 const CONTACT_DETAILS = [
   { label: "(302) 555-0142", icon: Phone },
-  { label: "hello@diamondstatelandscaping.example", icon: Mail },
+  { label: "hello@diamondstateblocklandscaping.example", icon: Mail },
   { label: "Newark, DE — serving New Castle County", icon: MapPin },
   { label: "Mon–Sat, 7am–6pm", icon: Clock },
 ];

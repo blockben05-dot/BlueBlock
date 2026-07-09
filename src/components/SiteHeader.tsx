@@ -18,7 +18,8 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="#home" className="text-lg font-bold text-slate-900">
-          Diamond State <span className="text-emerald-600">Landscaping</span>
+          Diamond State Block{" "}
+          <span className="text-emerald-600">Landscaping</span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
