@@ -29,13 +29,18 @@ demo site, not yet the multi-tenant production system.
   (clearly-labeled sample reviews), `Contact` (wraps `QuoteForm`),
   `SiteFooter`. Nav links are same-page anchors (`#home`, `#portfolio`,
   etc.), matching the original "single-page landing page" pitch.
-- `QuoteForm` is a client component with local `useState` only — on
-  submit it shows a "demo form, nothing was sent" message. It is **not**
-  wired to a real backend/lead database yet.
+- `QuoteForm` is a client component that POSTs to `src/app/api/quote/route.ts`,
+  which sends a real email via Resend (`RESEND_API_KEY` +
+  `LEAD_NOTIFICATION_EMAIL` in `.env.local`, documented in `.env.example`).
+  It does **not** yet persist to a database — a failed email send today
+  means a lost lead, which is still the gap to close before a real client
+  (see "Next steps" below).
 - GitHub: `blockben05-dot/BlueBlock`, auth via SSH (key already set up on
-  this machine). Vercel: no account yet — Hobby tier is fine for this
-  practice repo, but must upgrade to **Pro** before any real paying
-  client's domain goes live (Vercel's Hobby ToS forbids commercial use).
+  this machine). Vercel: account created (`blockben05-4743`, Hobby tier),
+  project `blue-block` deployed and live at `blue-block-lovat.vercel.app`,
+  auto-deploying on every push to `main`. Must upgrade to **Pro** before
+  any real paying client's domain goes live (Vercel's Hobby ToS forbids
+  commercial use).
 
 ## Standing rules for this project
 
@@ -62,4 +67,23 @@ demo site, not yet the multi-tenant production system.
 - Eventually: multi-tenant architecture (one Next.js app, per-client
   config files, hostname-based routing) instead of one repo per client,
   once there's more than one real client.
+
+## Multi-client environment variables (for when there's more than one client project)
+
+With today's one-Vercel-project-per-client setup, each new client's project
+needs its own `LEAD_NOTIFICATION_EMAIL` set to *that* client's phone/email —
+this is client-specific data and has to be entered by hand per project.
+
+But `RESEND_API_KEY` does **not** need to be re-entered per client — it's
+Ben's own Resend account sending on behalf of everyone, so it should be set
+once as a Vercel **Shared Environment Variable** (Environment Variables page
+→ "Link Shared Variable") and linked into every client project, instead of
+copy-pasting the same key into each new project's settings.
+
+This per-project env var editing is exactly the scaling pain point behind
+the multi-tenant architecture noted above: in that eventual model, each
+client's notification email would just be a field in their config file in
+the codebase, and there'd be zero Vercel dashboard visits per client at all.
+Not worth building for one demo site, but it's the reason that
+architecture pays off once there's more than 2-3 real clients.
 
