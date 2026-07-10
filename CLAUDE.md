@@ -126,9 +126,13 @@ Only once there's a real paying client:
 - Set that project's `LEAD_NOTIFICATION_EMAIL` to their phone/email (see
   "Multi-client environment variables" below for the Shared Variable
   trick for `RESEND_API_KEY`).
-- Edit `QuoteForm.tsx`'s `SERVICE_OPTIONS` and `route.ts`'s `from` name
-  to match their actual business/services — this is currently a
-  per-client manual edit, not a config file (see next bullet).
+- Per-client manual edit checklist (currently hardcoded, not a config
+  file — see next bullet for the eventual fix):
+  - `QuoteForm.tsx`'s `SERVICE_OPTIONS` and `route.ts`'s `from` name
+  - `layout.tsx`'s `SITE_URL` / `SITE_NAME` / `SITE_DESCRIPTION` consts
+  - `page.tsx`'s `jsonLd` object (name, description, url, telephone,
+    email, address, areaServed)
+  - `opengraph-image.tsx`'s hardcoded business name/location/tagline text
 
 Eventually, once there's more than ~2-3 real clients:
 
