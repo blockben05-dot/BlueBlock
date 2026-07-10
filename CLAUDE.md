@@ -50,6 +50,16 @@ demo site, not yet the multi-tenant production system.
    `{"ok":true}`, 200).
 7. Confirmed Vercel Web Analytics is free on Hobby up to 50,000
    events/month — safe to enable without cost risk.
+8. Added local-SEO plumbing: a branded Open Graph image generated in code
+   (`src/app/opengraph-image.tsx`, via `next/og`'s `ImageResponse` — no
+   external/scraped image), expanded `layout.tsx` metadata
+   (`metadataBase`, keywords, `openGraph`, `twitter` card), and
+   `LocalBusiness` JSON-LD structured data on the homepage. Used
+   `areaServed` instead of a fabricated street address, since home-service
+   businesses without a public storefront typically shouldn't list a
+   fake precise address. Verified the OG image renders and all meta
+   tags/JSON-LD are present in the actual page output, not just
+   type-checked.
 
 ## Current state
 
@@ -101,9 +111,6 @@ demo site, not yet the multi-tenant production system.
 
 Still on this demo repo, no real client yet:
 
-- Basic local-SEO plumbing: meta/Open Graph tags, `LocalBusiness`
-  schema.org structured data — the actual mechanism behind "rank locally
-  on Google," worth baking into the template now.
 - Real lead-capture persistence: form submit → write to a database first
   (e.g. Supabase/Postgres) → then notify via SMS/email (Twilio/Resend) —
   never notify-only, so a failed email send can't silently lose a lead.
