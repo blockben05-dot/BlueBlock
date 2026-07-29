@@ -121,18 +121,64 @@ Still on this demo repo, no real client yet:
 
 Only once there's a real paying client:
 
-- Buy *their* domain, point DNS at a Vercel project for their site.
-- Upgrade Vercel to **Pro** before their site goes live.
-- Set that project's `LEAD_NOTIFICATION_EMAIL` to their phone/email (see
-  "Multi-client environment variables" below for the Shared Variable
-  trick for `RESEND_API_KEY`).
-- Per-client manual edit checklist (currently hardcoded, not a config
-  file — see next bullet for the eventual fix):
-  - `QuoteForm.tsx`'s `SERVICE_OPTIONS` and `route.ts`'s `from` name
-  - `layout.tsx`'s `SITE_URL` / `SITE_NAME` / `SITE_DESCRIPTION` consts
-  - `page.tsx`'s `jsonLd` object (name, description, url, telephone,
-    email, address, areaServed)
-  - `opengraph-image.tsx`'s hardcoded business name/location/tagline text
+### Account/infrastructure setup (per client)
+
+- Create a new GitHub repo for the client (ideally via BlueBlock marked
+  as a GitHub "Template repository" → "Use this template", so it's a
+  clean history, not a fork of this demo).
+- New Vercel project, imported from that new repo, deployed.
+- Buy *their* domain, add it in that Vercel project's Domains settings,
+  point DNS at Vercel.
+- Upgrade Vercel to **Pro** before their site goes live (Hobby forbids
+  commercial use).
+- Set that project's `LEAD_NOTIFICATION_EMAIL` env var to the client's
+  phone/email. `RESEND_API_KEY` should be linked as a Shared
+  Environment Variable instead of re-entered (see "Multi-client
+  environment variables" below).
+- **Verify a real domain in Resend before this client goes live** —
+  confirmed 2026-07-29: Resend's default `onboarding@resend.dev` sender
+  can only deliver to the email address the Resend account itself was
+  signed up with. Since a client's `LEAD_NOTIFICATION_EMAIL` will almost
+  never be `block.ben05@gmail.com`, emails will silently fail to
+  deliver to any real client until a real domain (e.g. an agency domain
+  Ben owns) is verified in Resend and used as the `from` address. This
+  is a hard blocker, not a nice-to-have.
+
+### Source code / content edits (per client)
+
+Everything below is currently hardcoded per-repo, not driven by a
+config file (that's the eventual multi-tenant fix, see below):
+
+- `src/components/SiteHeader.tsx` / `SiteFooter.tsx` — business name
+- `src/components/Hero.tsx` — headline, subheadline copy, and the
+  stats row (years in business, properties served, licensed/insured —
+  currently placeholder numbers, must reflect the real business)
+- `src/components/Services.tsx` — the entire `SERVICES` array
+  (icons + descriptions) — a power washer or junk-removal business
+  needs a completely different list than a landscaper's
+- `src/components/QuoteForm.tsx` — `SERVICE_OPTIONS` array, must match
+  `Services.tsx`'s list exactly (it's the quote-form dropdown)
+- `src/components/Portfolio.tsx` — the `PROJECTS` array (titles,
+  locations, tags); real photos should replace the gradient
+  placeholders once the client supplies them
+- `src/components/About.tsx` — the narrative paragraphs and the
+  `BADGES` array (years in business, properties served, etc.)
+- `src/components/Reviews.tsx` — the `REVIEWS` array. **Must be real
+  reviews the client has given permission to use, or removed** — never
+  ship fabricated testimonials attributed to a real business (see
+  Section 5 of the client agreement template in
+  `~/code/Ben Inc/docs/client-agreement-template.md`)
+- `src/components/Contact.tsx` — `CONTACT_DETAILS` (real phone, email,
+  service area, hours)
+- `src/app/layout.tsx` — `SITE_URL` / `SITE_NAME` / `SITE_DESCRIPTION`
+  consts (drives page title, meta description, Open Graph, Twitter card)
+- `src/app/page.tsx` — the `jsonLd` object (name, description, url,
+  telephone, email, address, areaServed, priceRange)
+- `src/app/opengraph-image.tsx` — hardcoded business name, location,
+  and tagline text (and optionally the brand gradient colors)
+- `src/app/api/quote/route.ts` — the `from` display name in the email
+  (and the sender address itself, once a real domain is verified in
+  Resend per above)
 
 Eventually, once there's more than ~2-3 real clients:
 
