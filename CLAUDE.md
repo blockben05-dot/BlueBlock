@@ -60,6 +60,15 @@ demo site, not yet the multi-tenant production system.
    fake precise address. Verified the OG image renders and all meta
    tags/JSON-LD are present in the actual page output, not just
    type-checked.
+9. Drafted a client agreement template (`~/code/Ben Inc/docs/client-
+   agreement-template.md` — not legal advice, needs attorney review)
+   covering both the monthly-retainer and flat-fee-handoff models, and
+   wrote out the full per-client checklist below (every hardcoded file
+   to edit, plus account/infra setup steps). While researching it,
+   confirmed Resend's `onboarding@resend.dev` sender only delivers to
+   the Resend account's own signup email — fine for this demo (matches
+   `LEAD_NOTIFICATION_EMAIL`), but a hard blocker for any real client
+   until a real domain is verified in Resend.
 
 ## Current state
 
@@ -114,10 +123,12 @@ Still on this demo repo, no real client yet:
 - Real lead-capture persistence: form submit → write to a database first
   (e.g. Supabase/Postgres) → then notify via SMS/email (Twilio/Resend) —
   never notify-only, so a failed email send can't silently lose a lead.
-  This is the biggest remaining gap before a real client could rely on it.
-- Business-side, in parallel (not blocking code work, but don't skip):
-  draft a short client agreement — setup fee, monthly retainer terms, who
-  owns the domain, what happens on cancellation.
+  Deliberately **deferred** as of 2026-07-29 — Ben judged this not worth
+  building before there's a real client with real leads at stake; revisit
+  before client #1 goes live, not before.
+- ~~Business-side: draft a short client agreement~~ — **done 2026-07-29**,
+  see `~/code/Ben Inc/docs/client-agreement-template.md` (still needs a
+  real attorney's review before use with an actual client).
 
 Only once there's a real paying client:
 
