@@ -2,10 +2,14 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { QuoteForm } from "./QuoteForm";
 
 const CONTACT_DETAILS = [
-  { label: "(302) 555-0142", icon: Phone },
-  { label: "hello@diamondstateblocklandscaping.example", icon: Mail },
-  { label: "Newark, DE — serving New Castle County", icon: MapPin },
-  { label: "Mon–Sat, 7am–6pm", icon: Clock },
+  { label: "(302) 555-0142", href: "tel:+13025550142", icon: Phone },
+  {
+    label: "hello@diamondstateblocklandscaping.example",
+    href: "mailto:hello@diamondstateblocklandscaping.example",
+    icon: Mail,
+  },
+  { label: "Newark, DE — serving New Castle County", href: null, icon: MapPin },
+  { label: "Mon–Sat, 7am–6pm", href: null, icon: Clock },
 ];
 
 export function Contact() {
@@ -30,10 +34,16 @@ export function Contact() {
             <div className="rounded-2xl bg-emerald-800 p-8 text-white">
               <h3 className="text-lg font-semibold">Prefer to just call?</h3>
               <ul className="mt-6 space-y-4">
-                {CONTACT_DETAILS.map(({ label, icon: Icon }) => (
+                {CONTACT_DETAILS.map(({ label, href, icon: Icon }) => (
                   <li key={label} className="flex items-start gap-3 text-sm">
                     <Icon size={18} className="mt-0.5 shrink-0 text-emerald-300" />
-                    <span>{label}</span>
+                    {href ? (
+                      <a href={href} className="hover:text-emerald-200 hover:underline">
+                        {label}
+                      </a>
+                    ) : (
+                      <span>{label}</span>
+                    )}
                   </li>
                 ))}
               </ul>
