@@ -153,7 +153,22 @@ Only once there's a real paying client:
   never be `block.ben05@gmail.com`, emails will silently fail to
   deliver to any real client until a real domain (e.g. an agency domain
   Ben owns) is verified in Resend and used as the `from` address. This
-  is a hard blocker, not a nice-to-have.
+  is a hard blocker, not a nice-to-have. Verification = add the domain at
+  resend.com/domains, paste the SPF/DKIM/DMARC DNS records it gives you
+  into the domain's DNS panel (registrar or Vercel DNS), then click
+  Verify. This is a per-client step tied to each client's own domain, not
+  a one-time setup.
+- **Set up the client's Google Business Profile (GBP)** — separate from
+  the website and free, at business.google.com (name, address, phone,
+  hours, categories, photos). This is what actually surfaces the business
+  in the Google Maps "map pack," and "GBP management" is part of the
+  retainer Ben sells — so it's a real per-client deliverable, not
+  optional. Note: a domain and a GBP are independent things; buying a
+  domain is NOT "putting them on Google." Keep the business's name /
+  address / phone (NAP) identical between the GBP and the website's
+  `jsonLd` LocalBusiness data — consistency is what Google trusts for
+  local ranking. Ben has NOT done this for anyone yet (the demo is
+  fictional with no real address, so it does not apply to BlueBlock).
 
 ### Source code / content edits (per client)
 
